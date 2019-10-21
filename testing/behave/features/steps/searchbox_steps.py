@@ -2,30 +2,33 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from time import sleep
 
-
-@given(u'we have a browser looking at python.org')
-def step_impl(context):
+@given(u'we have a browser looking at "{url}"')
+def step_impl(context, url):
     context.browser = webdriver.Chrome()
-    context.browser.get("http://www.python.org")
+    context.browser.get(url)
 
+@given(u'the browser title contains "{title}"')
+def step_impl(context, title):
+    assert title in context.browser.title
 
-
-
-@when(u'we search for "{target}" using "{name}"')
-def step_impl(context, target, name):
+@when(u'we search for "{target}"')
+def step_impl(context, target):
     search_box = context.browser.find_element_by_name("q")
     search_box.clear()
     search_box.send_keys(target)
     search_box.send_keys(Keys.RETURN)
-#   raise NotImplementedError(u'STEP: When we search for "lasdjfghklhfdkj"')
 
+@when(u'we search using "{name}" for "{target}"')
+def step_impl(context, target, name):
+    search_box = context.browser.find_element_by_name(name)
+    search_box.clear()
+    search_box.send_keys(target)
+    search_box.send_keys(Keys.RETURN)
 
-@then(u'we get a "No Results" message')
+@then(u'we get a "{s}" message')
+def step_impl(context, s):
+    assert s in context.browser.page_source        
+    
+@then(u'we don\'t get a "{s}" message')
 def step_impl(context):
-    assert "No results found." in browser.page_source  
-#   raise NotImplementedError(u'STEP: Then we get a "No Results" message')
-
-
-@then(u'we don\'t get a "No Results" message')
-def step_impl(context):
-    assert "No results found." not in browser.page_source
+    assert s not in context.browser.page_source        
