@@ -1,4 +1,4 @@
-2019-11-18 20:55:20,957 ERROR: Exception on /user/Sad [GET] [in c:\users\bscal\appdata\local\programs\python\python37-32\lib\site-packages\flask\app.py:1891]
+2019-12-03 15:50:26,221 ERROR: Exception on / [GET] [in c:\users\bscal\appdata\local\programs\python\python37-32\lib\site-packages\flask\app.py:1891]
 Traceback (most recent call last):
   File "c:\users\bscal\appdata\local\programs\python\python37-32\lib\site-packages\sqlalchemy\engine\base.py", line 1249, in _execute_context
     cursor, statement, parameters, context
@@ -23,36 +23,12 @@ Traceback (most recent call last):
     return self.view_functions[rule.endpoint](**req.view_args)
   File "c:\users\bscal\appdata\local\programs\python\python37-32\lib\site-packages\flask_login\utils.py", line 261, in decorated_view
     return func(*args, **kwargs)
-  File "C:\Users\bscal\Web-Programming\brianblog\app\routes.py", line 111, in user
-    next_url=next_url, prev_url=prev_url)
-  File "c:\users\bscal\appdata\local\programs\python\python37-32\lib\site-packages\flask\templating.py", line 140, in render_template
-    ctx.app,
-  File "c:\users\bscal\appdata\local\programs\python\python37-32\lib\site-packages\flask\templating.py", line 120, in _render
-    rv = template.render(context)
-  File "c:\users\bscal\appdata\local\programs\python\python37-32\lib\site-packages\jinja2\asyncsupport.py", line 76, in render
-    return original_render(self, *args, **kwargs)
-  File "c:\users\bscal\appdata\local\programs\python\python37-32\lib\site-packages\jinja2\environment.py", line 1008, in render
-    return self.environment.handle_exception(exc_info, True)
-  File "c:\users\bscal\appdata\local\programs\python\python37-32\lib\site-packages\jinja2\environment.py", line 780, in handle_exception
-    reraise(exc_type, exc_value, tb)
-  File "c:\users\bscal\appdata\local\programs\python\python37-32\lib\site-packages\jinja2\_compat.py", line 37, in reraise
-    raise value.with_traceback(tb)
-  File "C:\Users\bscal\Web-Programming\brianblog\app\templates\user.html", line 2, in top-level template code
-    {% extends "base.html" %}
-  File "C:\Users\bscal\Web-Programming\brianblog\app\templates\base.html", line 32, in top-level template code
-    {% block content %}{% endblock %}
-  File "C:\Users\bscal\Web-Programming\brianblog\app\templates\user.html", line 12, in block "content"
-    <p>{{ user.followers.count() }} followers, {{ user.followed.count() }} following.</p>
-  File "c:\users\bscal\appdata\local\programs\python\python37-32\lib\site-packages\sqlalchemy\orm\dynamic.py", line 335, in count
-    return self._clone(sess).count()
-  File "c:\users\bscal\appdata\local\programs\python\python37-32\lib\site-packages\sqlalchemy\orm\query.py", line 3578, in count
-    return self.from_self(col).scalar()
-  File "c:\users\bscal\appdata\local\programs\python\python37-32\lib\site-packages\sqlalchemy\orm\query.py", line 3322, in scalar
-    ret = self.one()
-  File "c:\users\bscal\appdata\local\programs\python\python37-32\lib\site-packages\sqlalchemy\orm\query.py", line 3292, in one
-    ret = self.one_or_none()
-  File "c:\users\bscal\appdata\local\programs\python\python37-32\lib\site-packages\sqlalchemy\orm\query.py", line 3261, in one_or_none
-    ret = list(self)
+  File "C:\Users\bscal\Web-Programming\brianblog\app\routes.py", line 34, in index
+    page, app.config['POSTS_PER_PAGE'], False)
+  File "c:\users\bscal\appdata\local\programs\python\python37-32\lib\site-packages\flask_sqlalchemy\__init__.py", line 496, in paginate
+    items = self.limit(per_page).offset((page - 1) * per_page).all()
+  File "c:\users\bscal\appdata\local\programs\python\python37-32\lib\site-packages\sqlalchemy\orm\query.py", line 3178, in all
+    return list(self)
   File "c:\users\bscal\appdata\local\programs\python\python37-32\lib\site-packages\sqlalchemy\orm\query.py", line 3334, in __iter__
     return self._execute_and_instances(context)
   File "c:\users\bscal\appdata\local\programs\python\python37-32\lib\site-packages\sqlalchemy\orm\query.py", line 3359, in _execute_and_instances
@@ -76,9 +52,15 @@ Traceback (most recent call last):
   File "c:\users\bscal\appdata\local\programs\python\python37-32\lib\site-packages\sqlalchemy\engine\default.py", line 552, in do_execute
     cursor.execute(statement, parameters)
 sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: followers
-[SQL: SELECT count(*) AS count_1 
-FROM (SELECT user.id AS user_id, user.username AS user_username, user.email AS user_email, user.password_hash AS user_password_hash, user.about_me AS user_about_me, user.last_seen AS user_last_seen 
-FROM user, followers 
-WHERE followers.followed_id = ? AND followers.follower_id = user.id) AS anon_1]
-[parameters: (4,)]
+[SQL: SELECT anon_1.post_id AS anon_1_post_id, anon_1.post_body AS anon_1_post_body, anon_1.post_timestamp AS anon_1_post_timestamp, anon_1.post_user_id AS anon_1_post_user_id 
+FROM (SELECT post.id AS post_id, post.body AS post_body, post.timestamp AS post_timestamp, post.user_id AS post_user_id 
+FROM post JOIN followers ON followers.followed_id = post.user_id 
+WHERE followers.follower_id = ? UNION SELECT post.id AS post_id, post.body AS post_body, post.timestamp AS post_timestamp, post.user_id AS post_user_id 
+FROM post 
+WHERE post.user_id = ?) AS anon_1 ORDER BY anon_1.post_timestamp DESC
+ LIMIT ? OFFSET ?]
+[parameters: (6, 6, 25, 0)]
 (Background on this error at: http://sqlalche.me/e/e3q8)
+2019-12-05 18:06:44,522 INFO: Microblog startup [in C:\Users\bscal\Web-Programming\brianblog\app\__init__.py:52]
+2019-12-05 18:06:59,761 INFO: Microblog startup [in C:\Users\bscal\Web-Programming\brianblog\app\__init__.py:52]
+2019-12-05 18:11:10,434 INFO: Microblog startup [in C:\Users\bscal\Web-Programming\brianblog\app\__init__.py:52]
