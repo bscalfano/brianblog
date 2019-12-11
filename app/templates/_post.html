@@ -16,6 +16,27 @@
             <br>
             {{ post.body }}
         </td>
+        <!--Project Implementation-->
+        <td>
+            <style type="text/css">
+                button {
+                    background-color:slategray;
+                    color:white;
+                    border:none;
+                    border-radius:20px;
+                }
+                button:active{
+                    background-color: darkslategray;
+                }
+            </style>
+            <script type="text/javascript">
+                function jsClick() {
+                    {{ post.like() }};
+                };
+            </script>
+            <button onClick="jsClick()">Like</button>
+            <p>Likes: {{ post.likes }}</p>
+        </td>
         <!--ADD LIKE BUTTON HERE, INCLUDE LIKE COUNT-->
     </tr>
 </table>
