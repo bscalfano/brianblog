@@ -16,7 +16,7 @@
             <br>
             {{ post.body }}
         </td>
-        <!--Project Implementation-->
+        <!--Successful Project Implementation-->
         <td>
             <style type="text/css">
                 button {
@@ -30,13 +30,14 @@
                 }
             </style>
             <script type="text/javascript">
-                function jsClick() {
-                    {{ post.like() }};
+                var likes = 0;
+                function like() {
+                    likes += 1;
+                    document.getElementById("likes").innerHTML = likes;
                 };
             </script>
-            <button onClick="jsClick()">Like</button>
-            <p>Likes: {{ post.likes }}</p>
+            <button onClick="like()">Like</button>
+            <p>Clicks: <a id="likes">0</a></p>
         </td>
-        <!--ADD LIKE BUTTON HERE, INCLUDE LIKE COUNT-->
     </tr>
 </table>
