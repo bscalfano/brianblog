@@ -13,7 +13,7 @@ followers = db.Table(
     db.Column('followed_id', db.Integer, db.ForeignKey('user.id'))
 )
 
-#Failed Project implementation Part 1
+#Project implementation First Attempt
 #likes = db.Table('likes',
 #    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
 #    db.Column('post_id', db.Integer, db.ForeignKey('post.id'))
@@ -34,7 +34,7 @@ class User(UserMixin, db.Model):
         secondaryjoin=(followers.c.followed_id == id),
         backref=db.backref('followers', lazy='dynamic'), lazy='dynamic')
 
-    #Failed Project Implementation Part 1
+    #Project Implementation First Attempt
     #liked = db.relationship(
     #    'Post', secondary=likes, 
     #    primaryjoin=(likes.c.liker_id == id),
@@ -99,16 +99,15 @@ class Post(db.Model):
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     
-    #Failed Project Implementation Part 1
+    #Project Implementation First Attempt
     #liked = db.relationship(
     #    'Post', secondary=likes,
     #    primaryjoin=(likes.c.post_id == id),
     #    backref = db.backref('likes', lazy='dynamic'), lazy='dynamic')
 
     
-    #Failed Project Implementation Part 2
+    #Project Implementation Second Attempt
     #likes = 0
-
     #def like(self):
     #    self.likes += 1
 

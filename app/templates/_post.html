@@ -33,11 +33,11 @@
                 var likes = 0;
                 function like() {
                     likes += 1;
-                    document.getElementById("likes").innerHTML = likes;
+                    document.getElementById("likes").innerHTML = likes + " Likes";
                 };
             </script>
             <button onClick="like()">Like</button>
-            <p>Clicks: <a id="likes">0</a></p>
+            <p id="likes">0 Likes</p>
         </td>
     </tr>
 </table>
